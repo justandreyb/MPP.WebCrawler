@@ -8,21 +8,27 @@ namespace WEBCrawler.Model
 {
     class CrawlResult
     {
-        LinkedList<Site> sites;
+        Site site;
+        LinkedList<CrawlResult> results;
 
         public CrawlResult()
         {
-            sites = new LinkedList<Site>();
+            results = new LinkedList<CrawlResult>(); 
         }
 
-        public void addSite(Site site)
+        public void setSite(Site site)
         {
-            this.sites.AddLast(site);
+            this.site = site;
         }
 
-        public LinkedList<Site> getSites()
+        public void addResult(CrawlResult result)
         {
-            return this.sites;
+            this.results.AddLast(result);
+        }
+
+        public Site getSite()
+        {
+            return this.site;
         }
 
     }
