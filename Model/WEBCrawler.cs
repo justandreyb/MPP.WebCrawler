@@ -8,11 +8,43 @@ namespace WEBCrawler.Model
 {
     class WEBCrawler : IWEBCrawler
     {
-        public Task<CrawlResult> PerformCrawlingAsync(LinkedList<string> rootLinks, int maximalDepth)
-        {
-            CrawlResult result = new CrawlResult();
+        int maximalDepth;
+        CrawlResult result;
 
-            Task<CrawlResult> task = new Task<CrawlResult>();
+        public WEBCrawler(int maximalDepth)
+        {
+            this.maximalDepth = maximalDepth;
+            result = new CrawlResult();
+        }
+
+        public async Task<CrawlResult> PerformCrawlingAsync(LinkedList<string> links, int depth)
+        {
+            CrawlResult currentCrawl = new CrawlResult();
+            foreach (string link in links)
+            {
+                try
+                {
+                    Site currentSite = null;
+                    if (depth < maximalDepth)
+                    {
+                        currentSite = SiteSurfer.watchSite(link);
+                        if (currentSite.InnerLinks != null)
+                        {
+                            currentCrawl = await PerformCrawlingAsync(currentSite.InnerLinks, depth + 1);
+                        }
+                        if (currentCrawl != null)
+                        {
+                            result.addResult(currentCrawl);
+                        }
+                        currentCrawl.setSite(currentSite);
+                    }
+
+                }
+                catch {
+                    throw new Exception();
+                }
+            }
+            return result;
         }
     }
 }
