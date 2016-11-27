@@ -13,6 +13,7 @@ namespace WEBCrawler.Model
         public static Site watchSite(String addres)
         {
             Site site = new Site(addres);
+            site.initialize();
             return site;
         }
     }

@@ -16,12 +16,23 @@ namespace WEBCrawler.Model
         public Site(String link)
         {
             this.Addres = link;
+        }
 
+        public void initialize()
+        {
+            setDocument();
+            setInnerLinks();
+        }
+
+        private void setDocument()
+        {
             HtmlWeb web = new HtmlWeb();
-            document = web.Load(link);
-
+            document = web.Load(this.Addres);
+        }
+        private void setInnerLinks()
+        {
             this.innerLinks = HTMLParser.parse(document);
-        } 
+        }
 
         public string Addres
         {
