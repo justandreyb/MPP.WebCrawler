@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6FFBF38F-48EE-4F55-9E7A-026B1A98F9B6}</ProjectGuid>
+    <ProjectGuid>{754FE0D8-888F-4B20-9ACB-5BCF9DFB3BC8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WEBCrawler</RootNamespace>
@@ -35,9 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -59,7 +61,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\CrawlerWindow.xaml">
+    <Compile Include="Interface\ICommand.cs" />
+    <Compile Include="Interface\ICrawlerEventHandler.cs" />
+    <Compile Include="Interface\IDialog.cs" />
+    <Compile Include="Interface\IWEBCrawler.cs" />
+    <Compile Include="ModelView\Dialog\FileOpenDialog.cs" />
+    <Compile Include="Model\Crawler.cs" />
+    <Compile Include="Model\JSON\JSONCreator.cs" />
+    <Compile Include="Model\WEB\HTMLParser.cs" />
+    <Compile Include="Model\WEB\Site.cs" />
+    <Compile Include="Model\WEB\SiteSurfer.cs" />
+    <Compile Include="Model\JSON\JSONParser.cs" />
+    <Compile Include="View\CrawlerWindow.xaml.cs">
+      <DependentUpon>CrawlerWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="CrawlerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -67,19 +83,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\CrawlerWindow.xaml.cs">
+    <Compile Include="CrawlerWindow.xaml.cs">
       <DependentUpon>CrawlerWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\CrawlerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelView\CommandImpl.cs" />
+    <Compile Include="ModelView\Commands.cs" />
+    <Compile Include="ModelView\CrawlerHandler.cs" />
     <Compile Include="ModelView\CrawlResult.cs" />
-    <Compile Include="Model\WEB\HTMLParser.cs" />
-    <Compile Include="Model\IWEBCrawler.cs" />
-    <Compile Include="Model\WEB\Site.cs" />
-    <Compile Include="Model\WEB\SiteSurfer.cs" />
-    <Compile Include="Model\WEBCrawler.cs" />
-    <Compile Include="Model\XML\XMLParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -97,7 +114,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -107,7 +123,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="packages\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
